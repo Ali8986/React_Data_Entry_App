@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import FormEditingPage from "./components/editingForm";
+import UserForm from "./components/form";
+import { UserContext, UserCard } from "./components/DefaultUSerData";
+import Home from "./components/home";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App() {
+  const [userDetails, setUserdetails] = useState([]);
+  const [cards, setCards] = useState([
+    {
+      firstName: "",
+      lastName: "",
+      email: "",
+      status: "active",
+      id: new Date().getTime().toString(),
+    },
+  ]);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/form",
+      element: <UserForm />,
+    },
+    {
+      path: "/FormEditingPage",
+      element: <FormEditingPage />,
+    },
+  ]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UserCard.Provider value={[cards, setCards]}>
+        <UserContext.Provider value={[userDetails, setUserdetails]}>
+          <RouterProvider router={router} />
+        </UserContext.Provider>
+      </UserCard.Provider>
     </div>
   );
 }
