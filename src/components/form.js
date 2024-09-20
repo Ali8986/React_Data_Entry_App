@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useNavigate, useLocation, json } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext, UserCard } from "./DefaultUSerData";
+import { UserContext } from "./DefaultUSerData";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import {
   Card,
   CardContent,
@@ -26,26 +27,21 @@ import {
 
 const UserForm = () => {
   var UniqueId = uuidv4().split("-")[1];
-
   const { state } = useLocation();
 
   const navigate = useNavigate();
-  const handleInputChange = (id, field, value) => {
-    setUserCard((prevCards) =>
-      prevCards.map((card) =>
-        card.id === id ? { ...card, [field]: value } : card
-      )
-    );
-  };
 
   const [condition, setCondition] = useState(false);
-
-  const [users, setUsers] = useContext(UserContext);
-  const [userCard, setUserCard] = useContext(UserCard);
-
+  const { cards, setCards, setUserdetails, userDetails } =
+    useContext(UserContext);
+  const handleInputChange = (index, field, value) => {
+    const updatedForm = [...cards];
+    updatedForm[index][field] = value;
+    setCards(updatedForm);
+  };
   useEffect(() => {
     if (state) {
-      setUserCard([
+      setCards([
         {
           firstName: "",
           lastName: "",
@@ -55,7 +51,7 @@ const UserForm = () => {
         },
       ]);
     }
-  }, [setUserCard]);
+  }, [setCards]);
 
   const handleSubmit = (e, cardsArr) => {
     e.preventDefault();
@@ -67,26 +63,29 @@ const UserForm = () => {
         email: card.email,
         type: card.status,
       };
-      setUsers((prevUsers) => {
-        localStorage.setItem("Data", JSON.stringify([...prevUsers, newUser]));
-        const updatedUsers = [...prevUsers, newUser];
-        return updatedUsers;
+      setUserdetails((prevuserDetails) => {
+        localStorage.setItem(
+          "Data",
+          JSON.stringify([...prevuserDetails, newUser])
+        );
+        const updateduserDetails = [...prevuserDetails, newUser];
+        return updateduserDetails;
       });
     });
 
     navigate("/");
   };
   const handleDeleteCard = (id) => {
-    var newCards = userCard.filter((c) => c.id !== id);
-    setUserCard(newCards);
+    var newCards = cards.filter((c) => c.id !== id);
+    setCards(newCards);
 
-    if (userCard.length < 3) {
+    if (cards.length < 3) {
       setCondition(false);
     }
   };
   const handleAddingCard = (id) => {
-    var index = userCard.findIndex((value) => value.id === id);
-    userCard[0].id = UniqueId + id;
+    var index = cards.findIndex((value) => value.id === id);
+    cards[0].id = UniqueId + id;
     var newCard = {
       firstName: "",
       lastName: "",
@@ -95,18 +94,33 @@ const UserForm = () => {
       id: UniqueId,
     };
     const updatedCards = [
-      ...userCard.slice(0, index + 1),
+      ...cards.slice(0, index + 1),
       newCard,
-      ...userCard.slice(index + 1),
+      ...cards.slice(index + 1),
     ];
-    setUserCard(updatedCards);
+    setCards(updatedCards);
 
     setCondition(true);
   };
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e, userCard)}>
-        {userCard.map((card) => {
+      <div className="d-flex">
+        <div className="sub-a width-75">
+          <Link to="/">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              startIcon={<KeyboardBackspaceIcon />}
+              className="SubmitBtn"
+            >
+              Back
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <form onSubmit={(e) => handleSubmit(e, cards)}>
+        {cards.map((card, index) => {
           return (
             <Card className="Main_Card" key={card.id}>
               <CardContent>
@@ -135,7 +149,7 @@ const UserForm = () => {
                       ),
                     }}
                     onChange={(e) =>
-                      handleInputChange(card.id, "firstName", e.target.value)
+                      handleInputChange(index, "firstName", e.target.value)
                     }
                   />
                   <TextField
@@ -152,7 +166,7 @@ const UserForm = () => {
                       ),
                     }}
                     onChange={(e) =>
-                      handleInputChange(card.id, "lastName", e.target.value)
+                      handleInputChange(index, "lastName", e.target.value)
                     }
                   />
                 </Stack>
@@ -176,7 +190,7 @@ const UserForm = () => {
                       ),
                     }}
                     onChange={(e) =>
-                      handleInputChange(card.id, "email", e.target.value)
+                      handleInputChange(index, "email", e.target.value)
                     }
                   />
                   <TextField
@@ -186,7 +200,7 @@ const UserForm = () => {
                     select
                     value={card.status}
                     onChange={(e) =>
-                      handleInputChange(card.id, "status", e.target.value)
+                      handleInputChange(index, "status", e.target.value)
                     }
                     InputProps={{
                       startAdornment: (
@@ -224,15 +238,17 @@ const UserForm = () => {
           );
         })}
         <div className="d-flex">
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            endIcon={<Send />}
-            className="SubmitBtn"
-          >
-            Submit
-          </Button>
+          <div className="sub width-75">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              endIcon={<Send />}
+              className="SubmitBtn"
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </form>
     </div>

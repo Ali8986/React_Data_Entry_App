@@ -1,22 +1,12 @@
 import "./App.css";
-import React, { useState } from "react";
 import FormEditingPage from "./components/editingForm";
 import UserForm from "./components/form";
-import { UserContext, UserCard } from "./components/DefaultUSerData";
 import Home from "./components/home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserContextProvider } from "./components/DefaultUSerData";
 
 function App() {
-  const [userDetails, setUserdetails] = useState([]);
-  const [cards, setCards] = useState([
-    {
-      firstName: "",
-      lastName: "",
-      email: "",
-      status: "active",
-      id: new Date().getTime().toString(),
-    },
-  ]);
+  // let data = JSON.parse(localStorage.getItem("Data"));
 
   const router = createBrowserRouter([
     {
@@ -35,11 +25,9 @@ function App() {
 
   return (
     <div className="App">
-      <UserCard.Provider value={[cards, setCards]}>
-        <UserContext.Provider value={[userDetails, setUserdetails]}>
-          <RouterProvider router={router} />
-        </UserContext.Provider>
-      </UserCard.Provider>
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
     </div>
   );
 }

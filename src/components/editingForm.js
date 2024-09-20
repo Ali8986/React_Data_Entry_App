@@ -16,7 +16,7 @@ import { Person, Email, VerifiedUser, Send } from "@mui/icons-material";
 
 const FormEditingPage = () => {
   const navigation = useNavigate();
-  const [form, setForm] = useContext(UserContext);
+  const { userDetails, setUserdetails } = useContext(UserContext);
   const [editableForm, setEditableForm] = useState([]);
 
   useEffect(() => {
@@ -25,20 +25,19 @@ const FormEditingPage = () => {
       const parsedData = JSON.parse(savedData);
       setEditableForm(parsedData);
     } else {
-      setEditableForm(form);
+      setEditableForm(userDetails);
     }
-  }, [form]);
+  }, [userDetails]);
 
-  const handleChange = (e, name, id) => {
-    const updatedForm = editableForm.map((item) =>
-      item.id === id ? { ...item, [name]: e.target.value } : item
-    );
+  const handleChange = (e, field, index) => {
+    const updatedForm = [...editableForm];
+    updatedForm[index][field] = e.target.value;
     setEditableForm(updatedForm);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setForm(editableForm);
+    setUserdetails(editableForm);
     localStorage.setItem("Data", JSON.stringify(editableForm));
     navigation("/");
   };
@@ -48,7 +47,7 @@ const FormEditingPage = () => {
       {editableForm.length > 0 ? (
         <div>
           <form onSubmit={handleSubmit}>
-            {editableForm.map((value) => {
+            {editableForm.map((value, index) => {
               return (
                 <Card className="Main_Card" key={value.id}>
                   <CardContent>
@@ -75,7 +74,7 @@ const FormEditingPage = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={(e) => handleChange(e, "firstName", value.id)}
+                        onChange={(e) => handleChange(e, "firstName", index)}
                       />
                       <TextField
                         variant="outlined"
@@ -89,7 +88,7 @@ const FormEditingPage = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={(e) => handleChange(e, "lastName", value.id)}
+                        onChange={(e) => handleChange(e, "lastName", index)}
                       />
                     </Stack>
                     <Stack
@@ -110,7 +109,7 @@ const FormEditingPage = () => {
                             </InputAdornment>
                           ),
                         }}
-                        onChange={(e) => handleChange(e, "email", value.id)}
+                        onChange={(e) => handleChange(e, "email", index)}
                       />
                       <TextField
                         variant="outlined"
@@ -118,7 +117,7 @@ const FormEditingPage = () => {
                         label="active"
                         select
                         value={value.type}
-                        onChange={(e) => handleChange(e, "type", value.id)}
+                        onChange={(e) => handleChange(e, "type", index)}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">

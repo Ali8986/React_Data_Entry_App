@@ -53,9 +53,9 @@ code {
 
 .addBtn {
   font-size: 3px !important;
-  position: absolute !important;
   top: 10px !important;
   right: 10px !important;
+  position: absolute !important;
   z-index: 1 !important;
   background-color: #1976d2 !important;
   color: white !important;
@@ -66,15 +66,15 @@ code {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
+
 .addBtn, .deleteBtn:hover {
   background-color: #4579ad;
 }
 
 .d-flex {
-  max-width: 750px !important;
   display: flex;
-  justify-content: end;
-  margin: 50px 0px;
+  justify-content: center;
+  margin: 20px 0px;
 }
 
 .active {
@@ -107,12 +107,11 @@ code {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 30px 0px;
 }
 
 .table-body {
   max-width: 1100px;
-  box-shadow: 0px 0px 100px #1976d221;
+  box-shadow: 0px 0px 14px #1976d215;
   overflow: auto !important;
 }
 
@@ -123,12 +122,13 @@ code {
 
 .main-btn_group {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   margin: 20px 0px;
-  width: 900px;
+  width: 850px;
 }
 
 .linkBtn {
+  padding: 10px 12px;
   box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
   color: white;
   border-radius: 10px;
@@ -136,13 +136,27 @@ code {
   font-size: medium;
   font-weight: 600;
   text-transform: uppercase;
-  padding: 10px 15px;
   background-color: #1565C0;
-  margin: 0px 15px;
+  margin: 0px 0px 0px 15px;
 }
 
 .MuiDataGrid-row:nth-child(odd) {
   background-color: #a8a8a848 !important;
+}
+
+.width-75 {
+  width: 58%;
+}
+
+.sub {
+  display: flex;
+  justify-content: end
+}
+
+.sub-a {
+  display: flex;
+  justify-content: start;
+
 }
 
 /* .css-4k60b2-MuiDataGrid-root .MuiDataGrid-cell {

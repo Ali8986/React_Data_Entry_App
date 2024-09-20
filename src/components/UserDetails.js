@@ -1,10 +1,7 @@
-// import { useContext, useEffect } from "react";
-// import { UserContext } from "./DefaultUSerData";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
-
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -12,8 +9,6 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 const UserDetails = () => {
   var rawDat = localStorage.getItem("Data");
   var Data = JSON.parse(rawDat);
-  // const [users] = useContext(UserContext);
-
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -79,7 +74,7 @@ const UserDetails = () => {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
+        // checkboxSelection
         disableRowSelectionOnClick
         className="reow"
       />

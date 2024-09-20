@@ -1,5 +1,11 @@
-// import { createContext } from "react";
-import React from "react";
+import React, { createContext } from "react";
+import UseUserData from "./hooks/useUserData";
 
-export const UserContext = React.createContext();
-export const UserCard = React.createContext();
+export const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const userData = UseUserData();
+  return (
+    <UserContext.Provider value={userData}>{children}</UserContext.Provider>
+  );
+};
